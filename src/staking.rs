@@ -551,10 +551,13 @@ impl StakeKeeper {
         router: &dyn CosmosRouter<ExecC = ExecC, QueryC = QueryC>,
         block: &BlockInfo,
     ) -> AnyResult<AppResponse> {
+        println!("===============================process_queue===============================");
         let staking_storage = prefixed_read(storage, NAMESPACE_STAKING);
         let mut unbonding_queue = UNBONDING_QUEUE
             .may_load(&staking_storage)?
             .unwrap_or_default();
+        println!("===============================unbonding_queue: {:?}===============================", unbonding_queue);
+
         loop {
             let mut staking_storage = prefixed(storage, NAMESPACE_STAKING);
             match unbonding_queue.front() {
